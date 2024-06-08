@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile_inline: |
+        FROM node:20-alpine
+        ENV COREPACK_HOME=/home/node/.cache/node/corepack
+        RUN corepack enable pnpm \
+          && corepack prepare pnpm@latest --activate \
+          && chown -R 1000:1000 /home/node
+    user: 1000:1000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 5173:5173
+    command: ['pnpm', 'dev']
