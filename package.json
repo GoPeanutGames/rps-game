@@ -10,8 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@tanstack/react-query": "^5.40.1",
+    "@web3modal/wagmi": "^4.2.3",
+    "framer-motion": "^11.2.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "viem": "^2.13.7",
+    "wagmi": "^2.9.10"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
