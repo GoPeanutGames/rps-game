@@ -3,6 +3,7 @@ import {
   extendTheme,
   type ThemeConfig,
 } from '@chakra-ui/react'
+import { cardTheme } from './CardTheme'
 
 const config: ThemeConfig = {
   initialColorMode: 'dark',
@@ -23,6 +24,9 @@ const theme = extendTheme({
         fontFamily: '"Sora", serif',
       },
     },
+  },
+  components: {
+    Card: cardTheme,
   },
 })
 

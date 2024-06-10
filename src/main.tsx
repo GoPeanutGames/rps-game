@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WalletProvider } from '@feat/wallet/WalletProvider.tsx'
 import { ThemeProvider } from '@design/ThemeProvider.tsx'
 import { App } from './App.tsx'
+import { RPSProvider } from '@feat/rps/RPSProvider.tsx'
 
 const queryClient = new QueryClient()
 
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <WalletProvider>
         <ThemeProvider>
-          <App />
+          <RPSProvider>
+            <App />
+          </RPSProvider>
         </ThemeProvider>
       </WalletProvider>
     </QueryClientProvider>

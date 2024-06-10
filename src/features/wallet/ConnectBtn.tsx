@@ -25,8 +25,15 @@ export function ConnectBtn({
           <Avatar
             address={account}
             flexShrink='0'
+            w={{ base: '20px', md: '32px' }}
+            h={{ base: '20px', md: '32px' }}
           />
-          <chakra.span fontFamily='monospace'>{displayAddress}</chakra.span>
+          <chakra.span
+            display={{ base: 'none', md: 'block' }}
+            fontFamily='monospace'
+          >
+            {displayAddress}
+          </chakra.span>
         </>
       ) : (
         children
