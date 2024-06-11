@@ -23,7 +23,7 @@ export const abi = [
     outputs: [{ name: '', type: 'bool' }],
     stateMutability: 'nonpayable',
   },
-] as const 
+] as const
 
 export function useApprove({
   address,
@@ -35,46 +35,47 @@ export function useApprove({
 }) {
   const queryClient = useQueryClient()
   const { address: owner } = useAccount()
-  const {
-    data,
-    writeContract,
-    writeContractAsync,
-    ...mutation
-  } = useWriteContract()
+  const { data, writeContract, writeContractAsync, ...mutation } =
+    useWriteContract()
 
-  const onSuccess = useCallback((
-    _data: `0x${string}`,
-    { args: [spender] }: { args: readonly [`0x${string}`, bigint] }
-  ) => {
+  const onSuccess = useCallback(
+    (
+      _data: `0x${string}`,
+      { args: [spender] }: { args: readonly [`0x${string}`, bigint] },
+    ) => {
       queryClient.invalidateQueries({
-        predicate: ({ queryKey }) => (queryKey[1] as { scopeKey: string })?.scopeKey === JSON.stringify({ name: 'allowance', owner, spender })
+        predicate: ({ queryKey }) =>
+          (queryKey[1] as { scopeKey: string })?.scopeKey ===
+          JSON.stringify({ name: 'allowance', owner, spender }),
       })
-  }, [queryClient, owner])
+    },
+    [queryClient, owner],
+  )
 
-  function write({ spender, value }: {
-    spender: Address;
-    value: bigint;
-  }) {
+  function write({ spender, value }: { spender: Address; value: bigint }) {
     if (!address) throw new Error('ERC20 address is not specified')
-    return writeContract({
-      abi,
-      address,
-      functionName: 'approve',
-      args: [spender, value],
-    }, { onSuccess })
+    return writeContract(
+      {
+        abi,
+        address,
+        functionName: 'approve',
+        args: [spender, value],
+      },
+      { onSuccess },
+    )
   }
 
-  function writeAsync({ spender, value }: {
-    spender: Address;
-    value: bigint;
-  }) {
+  function writeAsync({ spender, value }: { spender: Address; value: bigint }) {
     if (!address) throw new Error('ERC20 address is not specified')
-    return writeContractAsync({
-      abi,
-      address,
-      functionName: 'approve',
-      args: [spender, value],
-    }, { onSuccess })
+    return writeContractAsync(
+      {
+        abi,
+        address,
+        functionName: 'approve',
+        args: [spender, value],
+      },
+      { onSuccess },
+    )
   }
 
   return { ...mutation, write, writeAsync }

@@ -12,22 +12,29 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
-  styles: {
-    global: {
-      body: {
-        w: '100vw',
-        h: '100vh',
-        backgroundImage: 'url("/bg.webp")',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        fontFamily: '"Sora", serif',
-      },
-    },
-  },
   components: {
     Card: cardTheme,
   },
+  textStyles: {
+    header: {
+      fontSize: '33px',
+      fontWeight: 800,
+      lineHeight: '40px',
+      letterSpacing: '1.65px',
+    },
+    label: {
+      fontSize: '22px',
+      fontWeight: '800',
+      lineHeight: '40px',
+      letterSpacing: '1.1px',
+    },
+    note: {
+      fontSize: '18px',
+      fontWeight: '400',
+      lineHeight: '24px',
+      letterSpacing: '0.9px',
+    },
+  }
 })
 
 export function ThemeProvider({ children }: { children?: Children }) {

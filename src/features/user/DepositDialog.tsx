@@ -139,15 +139,17 @@ export function DepositDialog() {
             >
               Deposit
             </Button>
-          ): (
-              <Button
-                onClick={() => approve({ spender: rpsAddress, value: parseEther(amount) })}
-                isDisabled={isInvalid}
-                isLoading={isApproving}
-              >
-                Approve
-              </Button>
-            )}
+          ) : (
+            <Button
+              onClick={() =>
+                approve({ spender: rpsAddress, value: parseEther(amount) })
+              }
+              isDisabled={isInvalid}
+              isLoading={isApproving}
+            >
+              Approve
+            </Button>
+          )}
 
           {isInsufficientBalance && (
             <Text

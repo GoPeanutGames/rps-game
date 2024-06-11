@@ -1,4 +1,4 @@
-import { useReadContract } from "wagmi";
+import { useReadContract } from 'wagmi'
 
 const abi = [
   {
@@ -21,17 +21,17 @@ export function useAllowance({
   /**
    *  Address of the ERC20 contract.
    */
-  address?: Address;
+  address?: Address
 
   /**
    *  Owner address.
    */
-  owner?: Address;
+  owner?: Address
 
   /**
    *  Spender address.
    */
-  spender?: Address;
+  spender?: Address
 }) {
   return useReadContract({
     abi,
