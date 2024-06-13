@@ -10,7 +10,7 @@ export function SplashScreen({ children }: { children?: Children }) {
     <motion.div
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: .62 }}
+      transition={{ duration: 0.62 }}
       style={{
         position: 'absolute',
         top: 0,
@@ -27,7 +27,7 @@ export function SplashScreen({ children }: { children?: Children }) {
         initial={{ right: -650 }}
         animate={{ right: -100 }}
         exit={{ right: -800 }}
-        style={{ 
+        style={{
           position: 'absolute',
           bottom: -100,
           width: 762,
@@ -53,7 +53,7 @@ export function SplashScreen({ children }: { children?: Children }) {
         initial={{ top: -180 }}
         animate={{ top: 80 }}
         exit={{ top: -300 }}
-        transition={{ duration: .32 }}
+        transition={{ duration: 0.32 }}
         style={{
           position: 'absolute',
           left: '50%',

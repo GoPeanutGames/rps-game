@@ -20,16 +20,17 @@ function Root() {
       fontFamily='"Sora", serif'
     >
       <AnimatePresence>
-        {!account && <SplashScreen>
-          <Flex flexDir='column' gap='2'>
-            <Button onClick={() => open()}>
-              Connect
-            </Button>
-            <Text fontStyle='italic'>
-              Connect your wallet to start
-            </Text>
-          </Flex>
-        </SplashScreen>}
+        {!account && (
+          <SplashScreen>
+            <Flex
+              flexDir='column'
+              gap='2'
+            >
+              <Button onClick={() => open()}>Connect</Button>
+              <Text fontStyle='italic'>Connect your wallet to start</Text>
+            </Flex>
+          </SplashScreen>
+        )}
       </AnimatePresence>
 
       {account && <Outlet />}

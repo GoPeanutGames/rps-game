@@ -34,7 +34,7 @@ const theme = extendTheme({
       lineHeight: '24px',
       letterSpacing: '0.9px',
     },
-  }
+  },
 })
 
 export function ThemeProvider({ children }: { children?: Children }) {
