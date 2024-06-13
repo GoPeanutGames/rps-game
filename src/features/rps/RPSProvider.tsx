@@ -1,28 +1,14 @@
-import { useReadContract } from 'wagmi'
-import { RPSContext } from './RPSContext'
-import { abi } from './rpsFreeAbi'
+import { IRPSContext, RPSContext } from './RPSContext'
 
-const address = import.meta.env.VITE_RPS_ADDRESS
-if (!address) {
-  throw new Error('VITE_RPS_ADDRESS is not set')
+export interface RPSProviderProps extends Pick<IRPSContext, 'address'> {
+  children?: Children
 }
 
-export function RPSProvider({ children }: { children: Children }) {
-  const { data: sourceAddress } = useReadContract({
-    abi,
-    address,
-    functionName: 'source',
-    query: {
-      staleTime: 3_000_000_000,
-      enabled: !!address,
-    },
-  })
-
+export function RPSProvider({ address, children }: RPSProviderProps) {
   return (
     <RPSContext.Provider
       value={{
-        address: address!,
-        sourceAddress: sourceAddress!,
+        address,
       }}
     >
       {children}

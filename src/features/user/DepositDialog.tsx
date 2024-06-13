@@ -17,8 +17,7 @@ import { useSourceBalance } from '@feat/rps/useSourceBalance'
 import { useBalanceOf } from '@feat/rps/useBalanceOf'
 import { useDeposit } from '@feat/rps/useDeposit'
 import { useRPS } from '@feat/rps/useRPS'
-import { useAllowance } from '@feat/erc20/useAllowance'
-import { useApprove } from '@feat/erc20/useApprove'
+import { useAllowance, useApprove } from '@feat/erc20'
 
 export function DepositDialog() {
   const toast = useToast()
@@ -50,10 +49,10 @@ export function DepositDialog() {
   }, [isUnderflow, isInsufficientBalance])
 
   const {
-    write: approve,
+    mutate: approve,
     error: approveError,
     isPending: isApproving,
-  } = useApprove({ address: sourceAddress })
+  } = useApprove()
 
   useEffect(() => {
     if (!approveError) return

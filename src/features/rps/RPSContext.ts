@@ -1,20 +1,12 @@
 import { createContext } from 'react'
 
-export interface RPSCtx {
+export interface IRPSContext {
   /**
-   *  Address of the RPS contract.
+   *  Address of the `RPS` (game) contract.
    */
-  address: Address
-
-  /**
-   *  Address of the related source token.
-   */
-  sourceAddress: Address
+  address?: Address
 }
 
-export const RPSContext = createContext<RPSCtx>({
-  address: '0x',
-  sourceAddress: '0x',
-})
+export const RPSContext = createContext<IRPSContext>({})
 
 RPSContext.displayName = 'RPSContext'

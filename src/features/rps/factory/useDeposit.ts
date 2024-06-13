@@ -1,35 +1,30 @@
 import { useContext } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAccount, useConfig } from 'wagmi'
 import { getPublicClient, getWalletClient } from 'wagmi/actions'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ERC20Context } from './ERC20Context'
-import { abi } from './erc20.abi'
+import { RPSFactoryContext } from './RPSFactoryContext'
+import { abi } from './rps-factory.abi'
 import { hexToBool } from 'viem'
 
-export function useApprove() {
+export function useDeposit() {
   const queryClient = useQueryClient()
   const config = useConfig()
 
-  const { address } = useContext(ERC20Context)
+  const { address } = useContext(RPSFactoryContext)
   const { address: account } = useAccount()
 
   return useMutation({
-    mutationKey: ['erc20', { scope: 'approve', address, account }],
+    mutationKey: ['rps-factory', { scope: 'deposit', address, account }],
     mutationFn: async ({
-      spender,
       value,
     }: {
       /**
-       *  The account allowed to transfer tokens from the owner's account.
-       */
-      spender: Address
-
-      /**
-       *  The amount of tokens to be approved to spend.
+       *  The amount of source tokens to deposit, effectively converting into
+       *  $RPS tokens.
        */
       value: bigint
     }) => {
-      if (!address) throw new Error('ERC20 context is not set')
+      if (!address) throw new Error('RPSFactory context is not set')
       if (!config) throw new Error('Wagmi context is not set')
 
       const publicClient = getPublicClient(config)
@@ -42,8 +37,8 @@ export function useApprove() {
         account,
         address,
         abi,
-        functionName: 'approve',
-        args: [spender, value],
+        functionName: 'deposit',
+        args: [value],
       })
 
       const hash = await walletClient.writeContract(request)
@@ -53,15 +48,11 @@ export function useApprove() {
 
       return { result, receipt }
     },
-    onSuccess: (_, { spender }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [
           'readContract',
-          {
-            address,
-            functionName: 'allowance',
-            args: [account, spender],
-          },
+          { address, functionName: 'balances', args: [account] },
         ],
       })
     },

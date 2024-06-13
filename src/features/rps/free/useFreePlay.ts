@@ -1,35 +1,24 @@
 import { useContext } from 'react'
+import { hexToBool } from 'viem'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAccount, useConfig } from 'wagmi'
 import { getPublicClient, getWalletClient } from 'wagmi/actions'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ERC20Context } from './ERC20Context'
-import { abi } from './erc20.abi'
-import { hexToBool } from 'viem'
+import { RPSFreeContext } from './RPSFreeContext'
+import { RPSPick } from '../types'
+import { abi } from './rps-free.abi'
 
-export function useApprove() {
+export function useFreePlay() {
   const queryClient = useQueryClient()
   const config = useConfig()
 
-  const { address } = useContext(ERC20Context)
+  const { address } = useContext(RPSFreeContext)
   const { address: account } = useAccount()
 
   return useMutation({
-    mutationKey: ['erc20', { scope: 'approve', address, account }],
-    mutationFn: async ({
-      spender,
-      value,
-    }: {
-      /**
-       *  The account allowed to transfer tokens from the owner's account.
-       */
-      spender: Address
-
-      /**
-       *  The amount of tokens to be approved to spend.
-       */
-      value: bigint
-    }) => {
-      if (!address) throw new Error('ERC20 context is not set')
+    mutationKey: ['rps-free', { scope: 'playFreeStake', address, account }],
+    mutationFn: async ({ pick }: { pick: RPSPick }) => {
+      if (!pick) throw new Error('`None` is unavailable variant')
+      if (!address) throw new Error('RPSFactory context is not set')
       if (!config) throw new Error('Wagmi context is not set')
 
       const publicClient = getPublicClient(config)
@@ -42,8 +31,8 @@ export function useApprove() {
         account,
         address,
         abi,
-        functionName: 'approve',
-        args: [spender, value],
+        functionName: 'playFreeStake',
+        args: [pick],
       })
 
       const hash = await walletClient.writeContract(request)
@@ -53,14 +42,14 @@ export function useApprove() {
 
       return { result, receipt }
     },
-    onSuccess: (_, { spender }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [
           'readContract',
           {
             address,
-            functionName: 'allowance',
-            args: [account, spender],
+            functionName: 'balances',
+            args: [account],
           },
         ],
       })

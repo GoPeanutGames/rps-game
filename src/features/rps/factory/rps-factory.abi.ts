@@ -1,118 +1,88 @@
 export const abi = [
   {
     inputs: [
-      {
-        name: 'spender',
-        type: 'address',
-      },
-      {
-        name: 'allowance',
-        type: 'uint256',
-      },
-      {
-        name: 'needed',
-        type: 'uint256',
-      },
+      { name: 'spender', type: 'address' },
+      { name: 'allowance', type: 'uint256' },
+      { name: 'needed', type: 'uint256' },
     ],
     name: 'ERC20InsufficientAllowance',
     type: 'error',
   },
   {
     inputs: [
-      {
-        name: 'sender',
-        type: 'address',
-      },
-      {
-        name: 'balance',
-        type: 'uint256',
-      },
-      {
-        name: 'needed',
-        type: 'uint256',
-      },
+      { name: 'sender', type: 'address' },
+      { name: 'balance', type: 'uint256' },
+      { name: 'needed', type: 'uint256' },
     ],
     name: 'ERC20InsufficientBalance',
     type: 'error',
   },
   {
-    inputs: [
-      {
-        name: 'approver',
-        type: 'address',
-      },
-    ],
+    inputs: [{ name: 'approver', type: 'address' }],
     name: 'ERC20InvalidApprover',
     type: 'error',
   },
   {
-    inputs: [
-      {
-        name: 'receiver',
-        type: 'address',
-      },
-    ],
+    inputs: [{ name: 'receiver', type: 'address' }],
     name: 'ERC20InvalidReceiver',
     type: 'error',
   },
   {
-    inputs: [
-      {
-        name: 'sender',
-        type: 'address',
-      },
-    ],
+    inputs: [{ name: 'sender', type: 'address' }],
     name: 'ERC20InvalidSender',
     type: 'error',
   },
   {
-    inputs: [
-      {
-        name: 'spender',
-        type: 'address',
-      },
-    ],
+    inputs: [{ name: 'spender', type: 'address' }],
     name: 'ERC20InvalidSpender',
     type: 'error',
   },
+  { inputs: [], name: 'MustBeAdmin', type: 'error' },
+  { inputs: [], name: 'MustBeOwner', type: 'error' },
   {
-    inputs: [],
-    name: 'MustBeAdmin',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'MustBeOwner',
-    type: 'error',
-  },
-  {
+    anonymous: false,
     inputs: [
       { indexed: true, name: 'id', type: 'uint256' },
       { indexed: true, name: 'game', type: 'address' },
-      { indexed: true, name: 'stakes', type: 'uint256' },
+      {
+        indexed: true,
+        name: 'stakes',
+        type: 'uint256',
+      },
     ],
     name: 'GameCreated',
     type: 'event',
   },
   {
+    anonymous: false,
     inputs: [
       { indexed: true, name: 'id', type: 'uint256' },
       { indexed: true, name: 'game', type: 'address' },
-      { indexed: true, name: 'player', type: 'address' },
+      {
+        indexed: true,
+        name: 'player',
+        type: 'address',
+      },
     ],
     name: 'GameJoined',
     type: 'event',
   },
   {
+    anonymous: false,
     inputs: [
       { indexed: true, name: 'id', type: 'uint256' },
       { indexed: true, name: 'game', type: 'address' },
-      { indexed: true, name: 'player', type: 'address' },
+      {
+        indexed: true,
+        name: 'player',
+        type: 'address',
+      },
     ],
     name: 'GameLeft',
     type: 'event',
   },
   {
+    anonymous: false,
     inputs: [
       { indexed: true, name: 'id', type: 'uint256' },
       { indexed: true, name: 'game', type: 'address' },
@@ -121,13 +91,42 @@ export const abi = [
     type: 'event',
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
     inputs: [
       { indexed: true, name: 'from', type: 'address' },
       { indexed: true, name: 'to', type: 'address' },
-      { indexed: false, name: 'value', type: 'uint256' },
+      {
+        indexed: false,
+        name: 'value',
+        type: 'uint256',
+      },
     ],
     name: 'Transfer',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'admin',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [{ name: 'account', type: 'address' }],
@@ -147,11 +146,11 @@ export const abi = [
     type: 'function',
   },
   {
-    type: 'function',
-    name: 'deposit',
-    stateMutability: 'nonpayable',
     inputs: [{ name: 'amount', type: 'uint256' }],
-    outputs: [{ type: 'bool' }],
+    name: 'deposit',
+    outputs: [{ name: '', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [{ name: 'scores', type: 'uint256[]' }],
@@ -189,9 +188,23 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [{ name: 'pick', type: 'uint8' }],
-    name: 'playFreeStake',
-    outputs: [{ name: 'isWinner', type: 'bool' }],
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'admin_', type: 'address' }],
+    name: 'setAdmin',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: 'treasury_', type: 'address' }],
+    name: 'setTreasury',
+    outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -241,16 +254,16 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'treasury',
-    outputs: [{ name: '', type: 'address' }],
-    stateMutability: 'view',
+    inputs: [{ name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
-    name: 'winReward',
-    outputs: [{ name: '', type: 'uint256' }],
+    name: 'treasury',
+    outputs: [{ name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
