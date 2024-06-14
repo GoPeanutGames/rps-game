@@ -1,14 +1,23 @@
 import { chakra, Flex, Text } from '@chakra-ui/react'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
+import { useAccount } from 'wagmi'
+import { formatEther } from 'viem'
 import human from '@design/human.webp'
 import ai from '@design/ai.webp'
+import { useBalanceOf } from '@feat/rps/factory/useBalanceOf'
+import { CoinBalance } from '@design/CoinBalance'
 
 export const Route = createLazyFileRoute('/')({
   component: Home,
 })
 
 function Home() {
+  const navigate = useNavigate({ from: '/' })
+
+  const { address: account } = useAccount()
+  const { data: balance } = useBalanceOf({ account })
+
   return (
     <Flex
       flexDir='column'
@@ -16,6 +25,22 @@ function Home() {
       justifyContent='center'
       gap='40px'
     >
+      <CoinBalance
+        as={motion.div}
+        whileHover={{ scale: 1.1 }}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          my: 2,
+          mx: 4,
+          cursor: 'pointer',
+        }}
+        iconProps={{ color: 'funky.500' }}
+        balance={formatEther(balance || 0n)}
+        onClick={() => navigate({ to: '/wallet' })}
+      />
+
       <Text
         textStyle='header'
         textAlign='center'

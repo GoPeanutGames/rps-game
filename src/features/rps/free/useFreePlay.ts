@@ -1,5 +1,4 @@
 import { useContext } from 'react'
-import { hexToBool } from 'viem'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAccount, useConfig } from 'wagmi'
 import { getPublicClient, getWalletClient } from 'wagmi/actions'
@@ -27,7 +26,7 @@ export function useFreePlay() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { request } = await publicClient.simulateContract({
+      const { result, request } = await publicClient.simulateContract({
         account,
         address,
         abi,
@@ -37,8 +36,6 @@ export function useFreePlay() {
 
       const hash = await walletClient.writeContract(request)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-      const result = hexToBool(receipt.logs[0].data)
 
       return { result, receipt }
     },

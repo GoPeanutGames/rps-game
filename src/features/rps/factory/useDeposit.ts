@@ -4,7 +4,6 @@ import { useAccount, useConfig } from 'wagmi'
 import { getPublicClient, getWalletClient } from 'wagmi/actions'
 import { RPSFactoryContext } from './RPSFactoryContext'
 import { abi } from './rps-factory.abi'
-import { hexToBool } from 'viem'
 
 export function useDeposit() {
   const queryClient = useQueryClient()
@@ -33,7 +32,7 @@ export function useDeposit() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { request } = await publicClient.simulateContract({
+      const { result, request } = await publicClient.simulateContract({
         account,
         address,
         abi,
@@ -43,8 +42,6 @@ export function useDeposit() {
 
       const hash = await walletClient.writeContract(request)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-      const result = hexToBool(receipt.logs[0].data)
 
       return { result, receipt }
     },

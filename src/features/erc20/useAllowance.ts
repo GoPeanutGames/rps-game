@@ -1,16 +1,12 @@
+import { useContext } from 'react'
 import { useReadContract } from 'wagmi'
+import { ERC20Context } from './ERC20Context'
 import { abi } from './erc20.abi'
 
 export function useAllowance({
-  address,
   owner,
   spender,
 }: {
-  /**
-   *  Address of the ERC20 contract.
-   */
-  address?: Address
-
   /**
    *  Owner address.
    */
@@ -21,6 +17,7 @@ export function useAllowance({
    */
   spender?: Address
 }) {
+  const { address } = useContext(ERC20Context)
   return useReadContract({
     abi,
     address,

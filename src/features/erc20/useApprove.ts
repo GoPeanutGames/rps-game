@@ -4,7 +4,6 @@ import { getPublicClient, getWalletClient } from 'wagmi/actions'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ERC20Context } from './ERC20Context'
 import { abi } from './erc20.abi'
-import { hexToBool } from 'viem'
 
 export function useApprove() {
   const queryClient = useQueryClient()
@@ -38,7 +37,7 @@ export function useApprove() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { request } = await publicClient.simulateContract({
+      const { result, request } = await publicClient.simulateContract({
         account,
         address,
         abi,
@@ -48,8 +47,6 @@ export function useApprove() {
 
       const hash = await walletClient.writeContract(request)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-      const result = hexToBool(receipt.logs[0].data)
 
       return { result, receipt }
     },

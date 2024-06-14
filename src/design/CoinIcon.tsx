@@ -3,7 +3,6 @@ import { Icon, IconProps } from '@chakra-ui/react'
 export function CoinIcon(props: IconProps) {
   return (
     <Icon
-      color='#DCD0FF'
       {...props}
       viewBox='0 0 20 20'
     >

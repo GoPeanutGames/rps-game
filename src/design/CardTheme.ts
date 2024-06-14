@@ -7,10 +7,8 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const variants = {
   funky: definePartsStyle({
     container: {
-      background: '#B0A8DB',
-      border: '3px solid #FFFFFF',
+      background: '#B0A8DBf0',
       borderRadius: '29px',
-      p: '30px 24px',
       color: '#000000',
     },
     header: {
