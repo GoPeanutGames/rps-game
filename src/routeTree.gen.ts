@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const WalletLazyImport = createFileRoute('/wallet')()
+const FreeplayLazyImport = createFileRoute('/freeplay')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
@@ -25,6 +26,11 @@ const WalletLazyRoute = WalletLazyImport.update({
   path: '/wallet',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/wallet.lazy').then((d) => d.Route))
+
+const FreeplayLazyRoute = FreeplayLazyImport.update({
+  path: '/freeplay',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/freeplay.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -42,6 +48,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/freeplay': {
+      id: '/freeplay'
+      path: '/freeplay'
+      fullPath: '/freeplay'
+      preLoaderRoute: typeof FreeplayLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/wallet': {
       id: '/wallet'
       path: '/wallet'
@@ -56,6 +69,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  FreeplayLazyRoute,
   WalletLazyRoute,
 })
 
@@ -68,11 +82,15 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/freeplay",
         "/wallet"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/freeplay": {
+      "filePath": "freeplay.lazy.tsx"
     },
     "/wallet": {
       "filePath": "wallet.lazy.tsx"

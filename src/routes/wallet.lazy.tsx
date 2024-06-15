@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
-import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
+import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
 import { formatEther, parseEther } from 'viem'
@@ -472,7 +472,7 @@ function WalletWithdraw() {
 }
 
 function WalletHeader() {
-  const navigate = useNavigate({ from: '/wallet' })
+  const { history } = useRouter()
 
   const { address: account } = useAccount()
   const { data: balance } = useBalanceOf({ account })
@@ -481,7 +481,7 @@ function WalletHeader() {
     <>
       <Button
         size='sm'
-        onClick={() => navigate({ to: '/' })}
+        onClick={() => history.back()}
       >
         Back
       </Button>

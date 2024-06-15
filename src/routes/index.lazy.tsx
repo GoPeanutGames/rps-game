@@ -99,6 +99,7 @@ function Home() {
               position: 'relative',
               overflow: 'visible',
             }}
+            onClick={() => navigate({ to: '/freeplay' })}
           >
             <chakra.div
               width='280px'
