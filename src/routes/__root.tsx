@@ -23,7 +23,7 @@ function Root() {
 
   return (
     <Container
-      maxW='container.xl'
+      maxW='container.md'
       h='100vh'
       fontFamily='"Sora", serif'
       position='relative'
