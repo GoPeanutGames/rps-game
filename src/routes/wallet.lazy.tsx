@@ -25,8 +25,13 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
-import { useBalanceOf } from '@feat/rps/factory/useBalanceOf'
-import { RPSFactoryContext } from '@feat/rps/factory'
+import {
+  RPSFactoryContext,
+  useBalanceOf,
+  useDeposit,
+  useWithdraw,
+  useSplitFee,
+} from '@feat/rps/factory'
 import {
   ERC20Context,
   ERC20Provider,
@@ -37,7 +42,6 @@ import {
 } from '@feat/erc20'
 import { CoinBalance } from '@design/CoinBalance'
 import { CoinIcon } from '@design/CoinIcon'
-import { useDeposit } from '@feat/rps/factory/useDeposit'
 
 export const Route = createLazyFileRoute('/wallet')({
   component: Wallet,
@@ -331,7 +335,140 @@ function WalletDeposit() {
 }
 
 function WalletWithdraw() {
-  return <div>Withdrawal</div>
+  const { address: account } = useAccount()
+  const { address: erc20Address } = useContext(ERC20Context)
+
+  const { data: balance } = useBalanceOf({ account })
+  const { data: symbol } = useSymbol()
+
+  const [amountIn, setAmountIn] = useState<string>('')
+
+  const isOverflow = useMemo(() => {
+    return (balance || 0n) < parseEther(amountIn)
+  }, [amountIn, balance])
+
+  const isInvalid = useMemo(() => {
+    return isOverflow
+  }, [isOverflow])
+
+  const { data: split } = useSplitFee({ value: parseEther(amountIn) })
+
+  const queryClient = useQueryClient()
+  const toast = useToast()
+
+  const { mutate: withdrawMutate, isPending: isWithdrawing } = useWithdraw()
+
+  const withdraw = useCallback(
+    (payload: Parameters<typeof withdrawMutate>[0]) => {
+      withdrawMutate(payload, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              'readContract',
+              {
+                address: erc20Address,
+                functionName: 'balanceOf',
+                args: [account],
+              },
+            ],
+          })
+
+          toast({
+            status: 'success',
+            title: 'Withdrawn succesfully',
+            description: 'Funds are succesfully withdrawn',
+            isClosable: true,
+            duration: 3_600,
+          })
+        },
+        onError: error =>
+          toast({
+            status: 'error',
+            title: 'Failed to withdraw',
+            description: error.message,
+            isClosable: true,
+            duration: 15_000,
+          }),
+      })
+    },
+    [queryClient, toast, withdrawMutate, erc20Address, account],
+  )
+
+  return (
+    <Box
+      display='flex'
+      flexDir='column'
+      gap='4'
+    >
+      <InputGroup>
+        <InputLeftAddon fontFamily='monospace'>FROM</InputLeftAddon>
+        <Input
+          bg='white'
+          value={amountIn}
+          onChange={e => {
+            const { value } = e.target
+            if (!/^\d*\.?\d*$/.test(value)) return
+            setAmountIn(value)
+          }}
+        />
+        <InputRightAddon>
+          <CoinIcon
+            boxSize='6'
+            mr='27.5px'
+          />
+        </InputRightAddon>
+      </InputGroup>
+
+      <Text
+        _hover={{ color: 'funky.500' }}
+        transition='.32s ease'
+        mt='-2'
+        fontSize='xs'
+        textAlign='right'
+        cursor='pointer'
+        onClick={() => balance && setAmountIn(formatEther(balance))}
+      >
+        Available: {formatEther(balance || 0n)}
+      </Text>
+
+      <InputGroup>
+        <InputLeftAddon fontFamily='monospace'>&ensp;&ensp;TO</InputLeftAddon>
+        <Input
+          bg='white'
+          value={formatEther(split?.[1] || 0n)}
+          isDisabled
+        />
+        <InputRightAddon>{symbol}</InputRightAddon>
+      </InputGroup>
+
+      <Text
+        _hover={{ color: 'funky.500' }}
+        transition='.32s ease'
+        mt='-2'
+        fontSize='xs'
+        textAlign='right'
+      >
+        Protocol fee: {formatEther(split?.[0] || 0n)}
+      </Text>
+
+      <Button
+        isLoading={isWithdrawing}
+        isDisabled={isInvalid}
+        onClick={() => withdraw({ value: parseEther(amountIn) })}
+      >
+        Withdraw
+      </Button>
+
+      <Box h='48px'>
+        {isOverflow && (
+          <Alert status='error'>
+            <AlertIcon />
+            <AlertDescription>Insufficient balance</AlertDescription>
+          </Alert>
+        )}
+      </Box>
+    </Box>
+  )
 }
 
 function WalletHeader() {
