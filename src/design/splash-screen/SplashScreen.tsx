@@ -12,7 +12,7 @@ export function SplashScreen({ children }: { children?: Children }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.62 }}
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         left: 0,
         width: '100vw',
