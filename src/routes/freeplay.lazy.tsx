@@ -158,7 +158,6 @@ function FreePlay() {
               >
                 <Button
                   colorScheme='funky'
-                  isLoading={isConfirming}
                   onClick={() => confirm({ pick })}
                 >
                   Confirm
@@ -166,7 +165,7 @@ function FreePlay() {
               </motion.div>
             )}
 
-            {!isIdle && !opponentPick && (
+            {isConfirming && (
               <motion.div
                 key='await-opponent'
                 initial={{ opacity: 1 }}
@@ -178,6 +177,22 @@ function FreePlay() {
                   lineHeight='40px'
                 >
                   Awaiting for the opponent
+                </Text>
+              </motion.div>
+            )}
+
+            { isError && (
+              <motion.div
+                key='error-note'
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Text
+                  textStyle='note'
+                  lineHeight='40px'
+                >
+                  Some attempts fails due to throttling, try later
                 </Text>
               </motion.div>
             )}

@@ -27,11 +27,12 @@ export function useFreePlay() {
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
       const { result, request } = await publicClient.simulateContract({
+        abi,
         account,
         address,
-        abi,
         functionName: 'playFreeStake',
         args: [pick],
+        gas: 100_000n,
       })
 
       const hash = await walletClient.writeContract(request)
