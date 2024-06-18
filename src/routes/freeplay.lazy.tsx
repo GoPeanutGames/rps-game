@@ -47,7 +47,13 @@ function FreePlay() {
     [confirmMutate, toast],
   )
 
-  const opponentPick = useOppositePick({ pick, isWin: data?.result })
+  const opponentPick = useOppositePick({
+    pick,
+    isWin: data?.result,
+    // A small trick to show draws from time to time, as we don't get
+    // this from the contract call.
+    isDraw: data?.result === true && (data?.receipt.transactionIndex % 5) < 1,
+  })
 
   const reset = useCallback(() => {
     setPick(0)

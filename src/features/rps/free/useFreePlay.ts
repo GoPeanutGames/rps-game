@@ -26,17 +26,23 @@ export function useFreePlay() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { result, request } = await publicClient.simulateContract({
+      const { request } = await publicClient.simulateContract({
         abi,
         account,
         address,
         functionName: 'playFreeStake',
         args: [pick],
-        gas: 100_000n,
+        gas: 250_000n,
       })
 
       const hash = await walletClient.writeContract(request)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
+
+      // This is a work around, since we can't read the game result from
+      // simulation (not exactly sure why, may be because simulation happens
+      // in another block). Games that user won contain at least one mint
+      // event.
+      const result = receipt.logs.length > 0
 
       return { result, receipt }
     },
