@@ -68,6 +68,7 @@ function Home() {
               position: 'relative',
               overflow: 'visible',
             }}
+            onClick={() => navigate({ to: '/game' })}
           >
             <chakra.div
               width='280px'

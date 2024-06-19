@@ -52,7 +52,7 @@ function FreePlay() {
     isWin: data?.result,
     // A small trick to show draws from time to time, as we don't get
     // this from the contract call.
-    isDraw: data?.result === true && (data?.receipt.transactionIndex % 5) < 1,
+    isDraw: data?.result === true && data?.receipt.transactionIndex % 5 < 1,
   })
 
   const reset = useCallback(() => {
@@ -187,7 +187,7 @@ function FreePlay() {
               </motion.div>
             )}
 
-            { isError && (
+            {isError && (
               <motion.div
                 key='error-note'
                 initial={{ opacity: 1 }}

@@ -15,9 +15,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const chains = import.meta.env.PROD
-  ? ([blast] as const)
-  : ([sepolia] as const)
+const chains = import.meta.env.PROD ? ([blast] as const) : ([sepolia] as const)
 
 const wagmiConfig = defaultWagmiConfig({
   projectId,

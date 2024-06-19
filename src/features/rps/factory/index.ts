@@ -9,3 +9,5 @@ export { useSplitFee } from './useSplitFee'
 
 export { useDeposit } from './useDeposit'
 export { useWithdraw } from './useWithdraw'
+
+export { useGameCreate } from './useGameCreate'
