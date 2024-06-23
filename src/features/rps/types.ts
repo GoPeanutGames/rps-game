@@ -7,3 +7,13 @@ export enum RPSPick {
   Paper = 2,
   Scissors = 3,
 }
+
+/**
+ *  An overview game instance.
+ */
+export interface Game {
+  id: bigint
+  addr: Address
+  stakes: bigint
+  numPlayers: bigint
+}
