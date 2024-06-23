@@ -1,5 +1,5 @@
 import { WagmiProvider } from 'wagmi'
-import { blast, sepolia } from 'viem/chains'
+import { blast, blastSepolia } from 'viem/chains'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 
@@ -15,7 +15,9 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const chains = import.meta.env.PROD ? ([blast] as const) : ([sepolia] as const)
+const chains = import.meta.env.PROD
+  ? ([blast] as const)
+  : ([blastSepolia] as const)
 
 const wagmiConfig = defaultWagmiConfig({
   projectId,

@@ -5,6 +5,7 @@ import { getPublicClient, getWalletClient } from 'wagmi/actions'
 import { RPSFreeContext } from './RPSFreeContext'
 import { RPSPick } from '../types'
 import { abi } from './rps-free.abi'
+import { getAddress, hexToNumber } from 'viem'
 
 export function useFreePlay() {
   const queryClient = useQueryClient()
@@ -38,11 +39,16 @@ export function useFreePlay() {
       const hash = await walletClient.writeContract(request)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-      // This is a work around, since we can't read the game result from
-      // simulation (not exactly sure why, may be because simulation happens
-      // in another block). Games that user won contain at least one mint
-      // event.
-      const result = receipt.logs.length > 0
+      const event = receipt.logs[0]
+      if (!event) {
+        throw new Error('Failed to parse response')
+      }
+
+      const result = {
+        pick0: hexToNumber(event.topics[1]!) as RPSPick,
+        pick1: hexToNumber(event.topics[2]!) as RPSPick,
+        winner: getAddress(`0x${event.topics[3]!.slice(26)}`),
+      }
 
       return { result, receipt }
     },

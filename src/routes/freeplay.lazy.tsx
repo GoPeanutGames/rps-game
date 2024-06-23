@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useAccount } from 'wagmi'
 import { formatEther } from 'viem'
@@ -10,7 +10,6 @@ import scissors from '@design/scissors.webp'
 import { useBalanceOf } from '@feat/rps/factory'
 import { useFreePlay } from '@feat/rps/free'
 import { CoinBalance } from '@design/CoinBalance'
-import { useOppositePick } from '@feat/rps'
 import { RPSPick } from '@feat/rps/types'
 
 export const Route = createLazyFileRoute('/freeplay')({
@@ -20,6 +19,7 @@ export const Route = createLazyFileRoute('/freeplay')({
 function FreePlay() {
   const toast = useToast()
 
+  const { address: account } = useAccount()
   const [pick, setPick] = useState<RPSPick>(0)
 
   const {
@@ -47,13 +47,13 @@ function FreePlay() {
     [confirmMutate, toast],
   )
 
-  const opponentPick = useOppositePick({
-    pick,
-    isWin: data?.result,
-    // A small trick to show draws from time to time, as we don't get
-    // this from the contract call.
-    isDraw: data?.result === true && data?.receipt.transactionIndex % 5 < 1,
-  })
+  const opponentPick = useMemo(() => {
+    return data?.result.pick1
+  }, [data])
+
+  const isWin = useMemo(() => {
+    return data && account && data?.result.winner == account
+  }, [data, account])
 
   const reset = useCallback(() => {
     setPick(0)
@@ -219,13 +219,13 @@ function FreePlay() {
                   textStyle='note'
                   lineHeight='40px'
                   bgGradient={
-                    data?.result
+                    isWin
                       ? 'linear(to-l, #addf3900, #addf39ff, #addf3900)'
                       : 'linear(to-l, #ff000000, #ff0000ff, #ff000000)'
                   }
                   color='black'
                 >
-                  {data?.result
+                  {isWin
                     ? 'Congratulations, you won!'
                     : 'Good luck next time...'}
                 </Text>

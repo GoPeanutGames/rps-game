@@ -37,7 +37,7 @@ export function useApprove() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { result, request } = await publicClient.simulateContract({
+      const { request } = await publicClient.simulateContract({
         account,
         address,
         abi,
@@ -46,9 +46,7 @@ export function useApprove() {
       })
 
       const hash = await walletClient.writeContract(request)
-      const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-      return { result, receipt }
+      return await publicClient.waitForTransactionReceipt({ hash })
     },
     onSuccess: (_, { spender }) => {
       queryClient.invalidateQueries({

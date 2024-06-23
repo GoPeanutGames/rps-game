@@ -53,13 +53,6 @@ export const abi = [
   },
   {
     type: 'function',
-    name: 'init',
-    inputs: [{ name: 'factory_', type: 'address' }],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
     name: 'isActive',
     inputs: [],
     outputs: [{ name: '', type: 'bool' }],
@@ -112,5 +105,19 @@ export const abi = [
     inputs: [],
     outputs: [{ name: 'total', type: 'uint256' }],
     stateMutability: 'pure',
+  },
+  {
+    type: 'event',
+    name: 'GameResult',
+    inputs: [
+      { name: 'pick0', type: 'uint8', indexed: true },
+      { name: 'pick1', type: 'uint8', indexed: true },
+      {
+        name: 'winner',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    anonymous: false,
   },
 ] as const

@@ -31,7 +31,7 @@ export function useWithdraw() {
       const walletClient = await getWalletClient(config)
       if (!walletClient) throw new Error('Failed accessing wallet client')
 
-      const { result, request } = await publicClient.simulateContract({
+      const { request } = await publicClient.simulateContract({
         account,
         address,
         abi,
@@ -40,9 +40,7 @@ export function useWithdraw() {
       })
 
       const hash = await walletClient.writeContract(request)
-      const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
-      return { result, receipt }
+      return await publicClient.waitForTransactionReceipt({ hash })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
