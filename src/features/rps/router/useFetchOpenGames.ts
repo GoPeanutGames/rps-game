@@ -38,21 +38,18 @@ export function useFetchOpenGames(
       const limit = BigInt(perPage)
       const offset = BigInt(pageParam) * limit
 
-      return (
-        await publicClient.readContract({
-          abi,
-          account,
-          address: address!,
-          functionName: 'open',
-          args: [offset, limit],
-        })
-      ).map(
-        (game, i) =>
-          ({
-            id: offset + BigInt(i),
-            ...game,
-          }) as Game,
-      )
+      const games = await publicClient.readContract({
+        abi,
+        account,
+        address: address!,
+        functionName: 'open',
+        args: [offset, limit],
+      })
+
+      return {
+        games: games.map((g, i) => ({ id: offset + BigInt(i), ...g }) as Game),
+        hasMore: !!games.length,
+      }
     },
     initialPageParam: 0,
     getNextPageParam: (_, groups) => groups.length,

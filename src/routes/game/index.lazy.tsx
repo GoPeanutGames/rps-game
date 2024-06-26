@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { formatEther, parseEther } from 'viem'
 import { useAccount } from 'wagmi'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
@@ -330,7 +330,12 @@ function GamesTable(props: Omit<HTMLChakraProps<'div'>, 'children'>) {
   })
 
   const games = useMemo(() => {
-    return data?.pages?.flatMap(page => page) || []
+    return data?.pages?.flatMap(page => page.games) || []
+  }, [data])
+
+  const hasMore = useMemo(() => {
+    if (!data) return true
+    return data.pages[data.pages.length - 1].hasMore
   }, [data])
 
   const table = useReactTable({
@@ -339,21 +344,18 @@ function GamesTable(props: Omit<HTMLChakraProps<'div'>, 'children'>) {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  const prev = useRef<number>(0)
   const onContainerScroll = useCallback(
     (el: HTMLDivElement) => {
       const { scrollHeight, scrollTop, clientHeight } = el
-
       if (
         scrollHeight - scrollTop - clientHeight < 10 &&
-        scrollTop > prev.current &&
-        !isFetching
+        !isFetching &&
+        hasMore
       ) {
-        prev.current = scrollTop + 50
         fetchNextPage()
       }
     },
-    [fetchNextPage, isFetching, prev],
+    [fetchNextPage, isFetching, hasMore],
   )
 
   return (
