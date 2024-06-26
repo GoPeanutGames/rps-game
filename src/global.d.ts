@@ -1,9 +1,7 @@
-import { ReactElement } from 'react'
+import { ReactNode } from 'react'
 
 declare global {
-  type Child = boolean | string | ReactElement | JSX.Element
-  type Children = Child | Child[]
-
+  type Children = ReactNode
   type Address = `0x${string}`
 }
 

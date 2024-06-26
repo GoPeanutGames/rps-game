@@ -325,7 +325,7 @@ function GameAddressCell({ addr }: { addr: Address }) {
 function GamesTable(props: Omit<HTMLChakraProps<'div'>, 'children'>) {
   const navigate = useNavigate({ from: '/game' })
 
-  const { data, fetchNextPage, isFetching } = useFetchOpenGames({
+  const { data, fetchNextPage, isLoading, isFetching } = useFetchOpenGames({
     perPage: 12,
   })
 
@@ -365,6 +365,16 @@ function GamesTable(props: Omit<HTMLChakraProps<'div'>, 'children'>) {
       {...props}
       onScroll={e => onContainerScroll(e.target as HTMLDivElement)}
     >
+      {(isFetching || isLoading) && (
+        <Progress
+          hasStripe
+          size='sm'
+          isIndeterminate
+          position='sticky'
+          top='41px'
+        />
+      )}
+
       <Table
         display='grid'
         variant='striped'
@@ -394,13 +404,6 @@ function GamesTable(props: Omit<HTMLChakraProps<'div'>, 'children'>) {
               ))}
             </Tr>
           ))}
-          {isFetching && (
-            <Progress
-              hasStripe
-              size='sm'
-              isIndeterminate
-            />
-          )}
         </Thead>
 
         <Tbody>
