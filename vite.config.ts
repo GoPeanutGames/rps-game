@@ -8,9 +8,13 @@ export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   resolve: {
     alias: {
-      '@design': path.resolve(__dirname, './src/design'),
-      '@feat': path.resolve(__dirname, './src/features'),
-      '@utils': path.resolve(__dirname, './src/utils'),
+      // Frequently used modules can be specified first
+      '@utils': path.resolve(__dirname, './src/lib/utils'),
+      '@design': path.resolve(__dirname, './src/lib/design'),
+
+      '@assets': path.resolve(__dirname, './src/assets'),
+      '@lib': path.resolve(__dirname, './src/lib'),
+      '@feat': path.resolve(__dirname, './src/feat'),
     },
   },
 })

@@ -17,11 +17,11 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const WalletLazyImport = createFileRoute('/wallet')()
-const GameLazyImport = createFileRoute('/game')()
+const GamesLazyImport = createFileRoute('/games')()
 const FreeplayLazyImport = createFileRoute('/freeplay')()
 const IndexLazyImport = createFileRoute('/')()
-const GameIndexLazyImport = createFileRoute('/game/')()
-const GameAddrLazyImport = createFileRoute('/game/$addr')()
+const GamesIndexLazyImport = createFileRoute('/games/')()
+const GamesAddrLazyImport = createFileRoute('/games/$addr')()
 
 // Create/Update Routes
 
@@ -30,10 +30,10 @@ const WalletLazyRoute = WalletLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/wallet.lazy').then((d) => d.Route))
 
-const GameLazyRoute = GameLazyImport.update({
-  path: '/game',
+const GamesLazyRoute = GamesLazyImport.update({
+  path: '/games',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/game.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/games.lazy').then((d) => d.Route))
 
 const FreeplayLazyRoute = FreeplayLazyImport.update({
   path: '/freeplay',
@@ -45,15 +45,15 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const GameIndexLazyRoute = GameIndexLazyImport.update({
+const GamesIndexLazyRoute = GamesIndexLazyImport.update({
   path: '/',
-  getParentRoute: () => GameLazyRoute,
-} as any).lazy(() => import('./routes/game/index.lazy').then((d) => d.Route))
+  getParentRoute: () => GamesLazyRoute,
+} as any).lazy(() => import('./routes/games/index.lazy').then((d) => d.Route))
 
-const GameAddrLazyRoute = GameAddrLazyImport.update({
+const GamesAddrLazyRoute = GamesAddrLazyImport.update({
   path: '/$addr',
-  getParentRoute: () => GameLazyRoute,
-} as any).lazy(() => import('./routes/game/$addr.lazy').then((d) => d.Route))
+  getParentRoute: () => GamesLazyRoute,
+} as any).lazy(() => import('./routes/games/$addr.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -73,11 +73,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FreeplayLazyImport
       parentRoute: typeof rootRoute
     }
-    '/game': {
-      id: '/game'
-      path: '/game'
-      fullPath: '/game'
-      preLoaderRoute: typeof GameLazyImport
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesLazyImport
       parentRoute: typeof rootRoute
     }
     '/wallet': {
@@ -87,19 +87,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WalletLazyImport
       parentRoute: typeof rootRoute
     }
-    '/game/$addr': {
-      id: '/game/$addr'
+    '/games/$addr': {
+      id: '/games/$addr'
       path: '/$addr'
-      fullPath: '/game/$addr'
-      preLoaderRoute: typeof GameAddrLazyImport
-      parentRoute: typeof GameLazyImport
+      fullPath: '/games/$addr'
+      preLoaderRoute: typeof GamesAddrLazyImport
+      parentRoute: typeof GamesLazyImport
     }
-    '/game/': {
-      id: '/game/'
+    '/games/': {
+      id: '/games/'
       path: '/'
-      fullPath: '/game/'
-      preLoaderRoute: typeof GameIndexLazyImport
-      parentRoute: typeof GameLazyImport
+      fullPath: '/games/'
+      preLoaderRoute: typeof GamesIndexLazyImport
+      parentRoute: typeof GamesLazyImport
     }
   }
 }
@@ -109,9 +109,9 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   FreeplayLazyRoute,
-  GameLazyRoute: GameLazyRoute.addChildren({
-    GameAddrLazyRoute,
-    GameIndexLazyRoute,
+  GamesLazyRoute: GamesLazyRoute.addChildren({
+    GamesAddrLazyRoute,
+    GamesIndexLazyRoute,
   }),
   WalletLazyRoute,
 })
@@ -126,7 +126,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/freeplay",
-        "/game",
+        "/games",
         "/wallet"
       ]
     },
@@ -136,23 +136,23 @@ export const routeTree = rootRoute.addChildren({
     "/freeplay": {
       "filePath": "freeplay.lazy.tsx"
     },
-    "/game": {
-      "filePath": "game.lazy.tsx",
+    "/games": {
+      "filePath": "games.lazy.tsx",
       "children": [
-        "/game/$addr",
-        "/game/"
+        "/games/$addr",
+        "/games/"
       ]
     },
     "/wallet": {
       "filePath": "wallet.lazy.tsx"
     },
-    "/game/$addr": {
-      "filePath": "game/$addr.lazy.tsx",
-      "parent": "/game"
+    "/games/$addr": {
+      "filePath": "games/$addr.lazy.tsx",
+      "parent": "/games"
     },
-    "/game/": {
-      "filePath": "game/index.lazy.tsx",
-      "parent": "/game"
+    "/games/": {
+      "filePath": "games/index.lazy.tsx",
+      "parent": "/games"
     }
   }
 }

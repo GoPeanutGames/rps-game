@@ -23,9 +23,13 @@
     /* Aliases */
     "baseUrl": "./src",
     "paths": {
-      "@design/*": ["design/*"],
-      "@feat/*": ["features/*"],
-      "@utils/*": ["utils/*"]
+      /* Frequently used modules */
+      "@utils/*": ["lib/utils/*"],
+      "@design/*": ["lib/design/*"],
+
+      "@assets/*": ["assets/*"],
+      "@lib/*": ["lib/*"],
+      "@feat/*": ["feat/*"]
     }
   },
   "include": ["src"]
