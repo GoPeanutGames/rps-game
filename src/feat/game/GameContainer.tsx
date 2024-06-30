@@ -38,7 +38,10 @@ export function GameContainer() {
         )}
       </AnimatePresence>
 
-      <Box h='40px'>
+      <Box
+        h='40px'
+        w='full'
+      >
         <GameStatus />
       </Box>
 
@@ -57,9 +60,13 @@ export function GameContainer() {
         )}
       </AnimatePresence>
 
-      <Box h='40px'>
+      <Flex
+        h='40px'
+        w='full'
+        justifyContent='center'
+      >
         <GameControll />
-      </Box>
+      </Flex>
     </Flex>
   )
 }

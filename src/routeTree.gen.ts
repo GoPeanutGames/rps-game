@@ -21,6 +21,7 @@ const GamesLazyImport = createFileRoute('/games')()
 const FreeplayLazyImport = createFileRoute('/freeplay')()
 const IndexLazyImport = createFileRoute('/')()
 const GamesIndexLazyImport = createFileRoute('/games/')()
+const GamesMyLazyImport = createFileRoute('/games/my')()
 const GamesAddrLazyImport = createFileRoute('/games/$addr')()
 
 // Create/Update Routes
@@ -49,6 +50,11 @@ const GamesIndexLazyRoute = GamesIndexLazyImport.update({
   path: '/',
   getParentRoute: () => GamesLazyRoute,
 } as any).lazy(() => import('./routes/games/index.lazy').then((d) => d.Route))
+
+const GamesMyLazyRoute = GamesMyLazyImport.update({
+  path: '/my',
+  getParentRoute: () => GamesLazyRoute,
+} as any).lazy(() => import('./routes/games/my.lazy').then((d) => d.Route))
 
 const GamesAddrLazyRoute = GamesAddrLazyImport.update({
   path: '/$addr',
@@ -94,6 +100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesAddrLazyImport
       parentRoute: typeof GamesLazyImport
     }
+    '/games/my': {
+      id: '/games/my'
+      path: '/my'
+      fullPath: '/games/my'
+      preLoaderRoute: typeof GamesMyLazyImport
+      parentRoute: typeof GamesLazyImport
+    }
     '/games/': {
       id: '/games/'
       path: '/'
@@ -111,6 +124,7 @@ export const routeTree = rootRoute.addChildren({
   FreeplayLazyRoute,
   GamesLazyRoute: GamesLazyRoute.addChildren({
     GamesAddrLazyRoute,
+    GamesMyLazyRoute,
     GamesIndexLazyRoute,
   }),
   WalletLazyRoute,
@@ -140,6 +154,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "games.lazy.tsx",
       "children": [
         "/games/$addr",
+        "/games/my",
         "/games/"
       ]
     },
@@ -148,6 +163,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/games/$addr": {
       "filePath": "games/$addr.lazy.tsx",
+      "parent": "/games"
+    },
+    "/games/my": {
+      "filePath": "games/my.lazy.tsx",
       "parent": "/games"
     },
     "/games/": {

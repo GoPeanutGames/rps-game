@@ -1,3 +1,4 @@
+import { Link as Nav } from '@tanstack/react-router'
 import { Box, BoxProps, Link, Text } from '@chakra-ui/react'
 import { CreateGameDialog } from './CreateGameDialog'
 
@@ -16,12 +17,15 @@ export function GamesHelper(props: Omit<BoxProps, 'children'>) {
 
       <Text fontSize='sm'>
         Looking for a game you have joined before?
-        <Link
-          variant='funky'
-          pl='2'
-        >
-          Search your games
-        </Link>
+        <Nav to='/games/my'>
+          <Link
+            variant='funky'
+            pl='2'
+            as='span'
+          >
+            Search your games
+          </Link>
+        </Nav>
       </Text>
 
       <Text fontSize='sm'>

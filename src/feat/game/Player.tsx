@@ -1,10 +1,11 @@
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { motion, HTMLMotionProps } from 'framer-motion'
 import { Text } from '@chakra-ui/react'
 import { RPSInput } from '@design/RPSInput'
-import { usePlayer } from '@lib/rps'
+import { usePlayer, useWatchGameResult } from '@lib/rps'
 import { zeroAddress } from 'viem'
 import { useShortAddr } from '@utils/useShortAddr'
+import { RPSPick } from '@lib/rps/types'
 
 interface PlayerProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   idx: 0 | 1
@@ -24,6 +25,15 @@ export const Player = forwardRef<HTMLDivElement, PlayerProps>(function Player(
 
   const displayAddr = useShortAddr(playerAddr)
 
+  const [pick, setPick] = useState<RPSPick>(0)
+
+  useWatchGameResult({
+    onLogs: logs => {
+      const { pick0, pick1 } = logs[0]
+      setPick([pick0, pick1][idx])
+    },
+  })
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 1.24 }}
@@ -38,7 +48,10 @@ export const Player = forwardRef<HTMLDivElement, PlayerProps>(function Player(
       {...props}
       ref={ref}
     >
-      <RPSInput disabled />
+      <RPSInput
+        disabled
+        value={pick}
+      />
 
       <Text
         textStyle='note'

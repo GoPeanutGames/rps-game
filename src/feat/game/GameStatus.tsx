@@ -1,14 +1,16 @@
 import { forwardRef } from 'react'
 import { motion, AnimatePresence, HTMLMotionProps } from 'framer-motion'
 import { Text } from '@chakra-ui/react'
-import { useActivePlayers } from '@lib/rps'
+import { useActivePlayers, useIsFinalized } from '@lib/rps'
 
 export function GameStatus() {
   const { data: active, isLoading: isLoadingPlayers } = useActivePlayers()
 
+  const { data: isFinalized } = useIsFinalized()
+
   return (
     <AnimatePresence mode='popLayout'>
-      {isLoadingPlayers && (
+      {isLoadingPlayers && !isFinalized && (
         <Status key='awaiting-join'>
           <Text
             w='full'
@@ -22,7 +24,7 @@ export function GameStatus() {
         </Status>
       )}
 
-      {active! < 2n && (
+      {active! < 2n && !isFinalized && (
         <Status key='awaiting-join'>
           <Text
             w='full'
@@ -36,7 +38,7 @@ export function GameStatus() {
         </Status>
       )}
 
-      {active! == 2n && (
+      {active! == 2n && !isFinalized && (
         <Status key='awaiting-pick'>
           <Text
             w='full'
@@ -46,6 +48,20 @@ export function GameStatus() {
             bgGradient='linear(to-l, gray.800, gray.600, gray.800)'
           >
             Players are picking
+          </Text>
+        </Status>
+      )}
+
+      {isFinalized && (
+        <Status key='awaiting-pick'>
+          <Text
+            w='full'
+            textAlign='center'
+            textStyle='note'
+            lineHeight='40px'
+            bgGradient='linear(to-l, gray.800, gray.600, gray.800)'
+          >
+            Game is over
           </Text>
         </Status>
       )}

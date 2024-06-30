@@ -12,9 +12,11 @@ export { useWithdraw } from './useWithdraw'
 
 export { useGameCreate } from './useGameCreate'
 export { useGameJoin } from './useGameJoin'
+export { useGameLeave } from './useGameLeave'
 
 export { useAddrToId } from './useAddrToId'
 export { useStakes } from './useStakes'
 
 export { useWatchGameJoinedByAddr } from './useWatchGameJoinedByAddr'
 export { useWatchGameLeftByAddr } from './useWatchGameLeftByAddr'
+export { useWatchGameOverByAddr } from './useWatchGameOverByAddr'

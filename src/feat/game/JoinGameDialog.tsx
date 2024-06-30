@@ -56,7 +56,7 @@ export function JoinGameDialog({ trigger }: { trigger?: ReactElement }) {
         onError: error =>
           toast({
             status: 'error',
-            title: 'Failed to join a game',
+            title: 'Failed to join the game',
             description: error.message,
             isClosable: true,
             duration: 15_000,

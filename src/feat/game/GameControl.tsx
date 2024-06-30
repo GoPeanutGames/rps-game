@@ -11,6 +11,7 @@ import {
 } from '@lib/rps'
 import { JoinGameDialog } from './JoinGameDialog'
 import { Link } from '@tanstack/react-router'
+import { LeaveGameDialog } from './LeaveGameDialog'
 
 export function GameControll() {
   const { data: canJoin } = useCanJoin()
@@ -60,7 +61,7 @@ export function GameControll() {
 
       {canLeave && isParticipant && (
         <Controll key='leave'>
-          <Button>Leave</Button>
+          <LeaveGameDialog trigger={<Button>Leave</Button>} />
         </Controll>
       )}
     </AnimatePresence>

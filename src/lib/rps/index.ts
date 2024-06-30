@@ -9,3 +9,11 @@ export { useAddrToId } from './useAddrToId'
 export { useCanJoin } from './useCanJoin'
 export { useCanLeave } from './useCanLeave'
 export { useActivePlayers } from './useActivePlayers'
+export { useIsFinalized } from './useIsFinalized'
+
+export { usePick } from './usePick'
+export { useCommit } from './useCommit'
+
+export { useWatchGameResult } from './useWatchGameResult'
+
+export { useSecret } from './useSecret'

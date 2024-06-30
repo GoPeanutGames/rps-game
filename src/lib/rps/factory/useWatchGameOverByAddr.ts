@@ -5,7 +5,7 @@ import { RPSFactoryContext } from './RPSFactoryContext'
 import { abi } from './rps-factory.abi'
 import { hexToAddress } from '@utils/address'
 
-export function useWatchGameJoinedByAddr({
+export function useWatchGameOverByAddr({
   gameAddress,
   onLogs,
 }: {
@@ -14,8 +14,7 @@ export function useWatchGameJoinedByAddr({
     logs: {
       id: bigint
       game: Address
-      player: Address
-      log: Log<bigint, number, false, (typeof abi)[9], undefined>
+      log: Log<bigint, number, false, (typeof abi)[11], undefined>
     }[],
   ) => void
 }) {
@@ -23,14 +22,13 @@ export function useWatchGameJoinedByAddr({
   useWatchContractEvent({
     abi,
     address,
-    eventName: 'GameJoined',
+    eventName: 'GameOver',
     args: { game: gameAddress },
     onLogs: logs =>
       onLogs?.(
         logs.map(log => ({
           id: hexToBigInt(log.topics[1]),
-          game: hexToAddress(log.topics[2])!,
-          player: hexToAddress(log.topics[3])!,
+          game: hexToAddress(log.topics[2]) as Address,
           log,
         })),
       ),

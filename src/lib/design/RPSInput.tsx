@@ -18,7 +18,7 @@ export function RPSInput({
   disabled,
   style,
   ...props
-}: Omit<HTMLMotionProps<'div'>, 'children'> & {
+}: Omit<HTMLMotionProps<'div'>, 'children' | 'onChange'> & {
   value?: Value
   onChange?: (value: Value) => void
   disabled?: boolean
@@ -47,9 +47,10 @@ export function RPSInput({
       >
         {options.map(({ img, value }) => (
           <motion.div
+            key={value}
             whileHover={{ scale: 1.12, cursor: 'pointer' }}
             animate={{
-              opacity: __value === value ? 1 : disabled ? 0.32 : 1,
+              opacity: __value === value ? 1 : 0.32,
             }}
             style={{
               width: 144,

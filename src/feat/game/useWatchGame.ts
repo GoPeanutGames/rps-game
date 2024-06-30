@@ -5,7 +5,9 @@ import { RPSContext } from '@lib/rps'
 import {
   useWatchGameJoinedByAddr,
   useWatchGameLeftByAddr,
+  useWatchGameOverByAddr,
 } from '@lib/rps/factory'
+import { addrShortify } from '@utils/address'
 
 /**
  *  Acts as a top level watcher for in-game events to invalidate
@@ -28,7 +30,7 @@ export function useWatchGame() {
         toast({
           status: 'info',
           position: 'top',
-          title: `Player ${log.player.slice(8)} joined the game`,
+          title: `Player ${addrShortify(log.player)} joined the game`,
           isClosable: true,
           duration: 4_200,
         }),
@@ -47,7 +49,25 @@ export function useWatchGame() {
         toast({
           status: 'info',
           position: 'top',
-          title: `Player ${log.player.slice(0)} left the game`,
+          title: `Player ${addrShortify(log.player)} left the game`,
+          isClosable: true,
+          duration: 4_200,
+        }),
+      )
+    },
+  })
+
+  useWatchGameOverByAddr({
+    onLogs: logs => {
+      queryClient.invalidateQueries({
+        queryKey: ['readContract', { address: gameAddress }],
+      })
+
+      logs.map(() =>
+        toast({
+          status: 'info',
+          position: 'top',
+          title: 'Game was finished',
           isClosable: true,
           duration: 4_200,
         }),

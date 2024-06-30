@@ -115,7 +115,7 @@ export const abi = [
       {
         name: 'winner',
         type: 'address',
-        indexed: false,
+        indexed: true,
       },
     ],
     anonymous: false,
